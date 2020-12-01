@@ -17,22 +17,51 @@ public class Subject implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String subject_id;
     private String subject_name;
     private String subject_detail;
+    @Temporal(TemporalType.TIME)
     private Date start_date;
+    @Temporal(TemporalType.TIME)
     private Date end_date;
     private String day;
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
-    @ManyToMany(mappedBy = "courses", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "subjects", fetch = FetchType.LAZY)
     private Set<Student> students = new HashSet<>();
 
+    public Subject() {
+
+    }
+
+    public Subject(Teacher teacher, String subject_id,
+                   String subject_name,
+                   String subject_detail,
+                   Date start_date,
+                   Date end_date,
+                   String day) {
+        this.teacher = teacher;
+        this.subject_name = subject_name;
+        this.subject_id = subject_id;
+        this.subject_detail = subject_detail;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.day = day;
+    }
 
     public Long getId() {
         return id;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     public void setId(Long id) {
@@ -62,14 +91,6 @@ public class Subject implements Serializable {
     public void setSubject_detail(String subject_detail) {
         this.subject_detail = subject_detail;
     }
-
-//    public Long getTeacher_id() {
-//        return teacher_id;
-//    }
-//
-//    public void setTeacher_id(Long teacher_id) {
-//        this.teacher_id = teacher_id;
-//    }
 
     public Date getStart_date() {
         return start_date;

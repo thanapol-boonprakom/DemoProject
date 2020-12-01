@@ -1,9 +1,14 @@
 package model.entity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.testEntity.*;
 import model.OTD.StudentModelDTO;
 import model.OTD.SubjectModelDTO;
 import model.OTD.TeacherModelDTO;
+import model.entity.AddressRepository;
+import model.entity.StudentModel;
+import model.entity.StudentRepository;
+import model.entity.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,16 +17,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping(path = "/demo")
 public class MainController {
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private AddressRepository addressRepository;
 //    @Autowired
-//    private TeacherRepository teacherRepository;
+//    private StudentModelRepository studentRepository;
 //    @Autowired
-//    private StudentRepository studentRepository;
+//    private TeacherModelRepository teacherRepository;
 //    @Autowired
-//    private SubjectRepository subjectRepository;
+//    private SubjectModelRepository subjectRepository;
 //
 //    @PostMapping(path = "/addTeacher") // Map ONLY POST Requests
 //    public @ResponseBody
@@ -35,7 +36,7 @@ public class MainController {
 //            System.out.println(e);
 //        }
 //
-//        TeacherModel n = new TeacherModel();
+//        Teacher n = new Teacher();
 //        n.setFirst_name(modelDTO.getFirst_name());
 //        n.setLast_name(modelDTO.getLast_name());
 //        n.setBranch(modelDTO.getBranch());
@@ -55,7 +56,7 @@ public class MainController {
 //            System.out.println(e);
 //        }
 //
-//        StudentModel studentModel = new StudentModel();
+//        Student studentModel = new Student();
 //        studentModel.setFirst_name(modelDTO.getFirst_name());
 //        studentModel.setLast_name(modelDTO.getLast_name());
 //        studentModel.setYear(modelDTO.getYear());
@@ -75,10 +76,9 @@ public class MainController {
 //            System.out.println(e);
 //        }
 //
-//        SubjectModel subjectModel = new SubjectModel();
+//        Subject subjectModel = new Subject();
 //        subjectModel.setSubject_name(modelDTO.getSubject_name());
 //        subjectModel.setSubject_id(modelDTO.getSubject_id());
-//        subjectModel.setTeacher_id(modelDTO.getTeacher_id());
 //        subjectModel.setStart_date(modelDTO.getStart_date());
 //        subjectModel.setEnd_date(modelDTO.getEnd_date());
 //        subjectModel.setDay(modelDTO.getDay());
@@ -87,13 +87,13 @@ public class MainController {
 //
 //    @GetMapping(path = "/allTeacher")
 //    public @ResponseBody
-//    Iterable<TeacherModel> getAllUsers() {
+//    Iterable<Teacher> getAllUsers() {
 //        return teacherRepository.findAll();
 //    }
 //
 //    @GetMapping(path = "/allSubject")
 //    public @ResponseBody
-//    Iterable<SubjectModel> getAllSubject() {
+//    Iterable<Subject> getAllSubject() {
 //        return subjectRepository.findAll();
 //    }
 }

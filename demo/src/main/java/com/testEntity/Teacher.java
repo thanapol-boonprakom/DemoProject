@@ -12,27 +12,37 @@ import java.io.Serializable;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class Teacher implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String first_name;
-
     private String last_name;
-
     private String branch;
     @OneToOne(mappedBy = "teacher", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private Subject subject;
 
-//    public Teacher(){
-//
-//    }
-//    public Teacher(String fname, String lname, String branch){
-//        this.first_name = fname;
-//        this.last_name = lname;
-//        this.branch = branch;
-//    }
+    public Subject getSubject() {
+        return subject;
+    }
 
+    public void setSubject(Subject subject) {
+        this.subject = subject;
+    }
+
+    public Teacher() {
+
+    }
+    public Teacher(Long id) {
+        this.id = id;
+    }
+
+
+    public Teacher(Long id,String fname, String lname, String branch){
+        this.id = id;
+        this.first_name = fname;
+        this.last_name = lname;
+        this.branch = branch;
+    }
 
 
     public Long getId() {

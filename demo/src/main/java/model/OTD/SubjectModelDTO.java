@@ -3,6 +3,8 @@ package model.OTD;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import java.util.Date;
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SubjectModelDTO {
@@ -11,7 +13,9 @@ public class SubjectModelDTO {
     private String subject_name;
     private String subject_detail;
     private Long teacher_id;
+    @Temporal(TemporalType.TIME)
     private Date start_date;
+    @Temporal(TemporalType.TIME)
     private Date end_date;
     private String day;
 

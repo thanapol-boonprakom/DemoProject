@@ -27,7 +27,9 @@ public class Student implements Serializable {
             inverseJoinColumns = {
                     @JoinColumn(name = "subjects_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
-    private Set<Subject> courses = new HashSet<>();
+    private Set<Subject> subjects = new HashSet<>();
+
+
 
     public Long getId() {
         return id;
