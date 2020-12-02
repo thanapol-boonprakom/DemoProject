@@ -22,13 +22,19 @@ public class Student implements Serializable {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "students_subjects",
             joinColumns = {
-                    @JoinColumn(name = "student_id", referencedColumnName = "id",
+                    @JoinColumn(name = "students_id", referencedColumnName = "id",
                             nullable = false, updatable = false)},
             inverseJoinColumns = {
                     @JoinColumn(name = "subjects_id", referencedColumnName = "id",
                             nullable = false, updatable = false)})
     private Set<Subject> subjects = new HashSet<>();
 
+    public Student(){
+
+    }
+    public Student(Long id){
+        this.id = id;
+    }
 
 
     public Long getId() {

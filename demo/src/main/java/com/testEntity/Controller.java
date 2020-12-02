@@ -3,6 +3,7 @@ package com.testEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import model.OTD.StudentModelDTO;
 import model.OTD.SubjectModelDTO;
+import model.OTD.Subject_StudentDTO;
 import model.OTD.TeacherModelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,8 @@ public class Controller {
     private TeacherModelRepository teacherRepository;
     @Autowired
     private SubjectModelRepository subjectRepository;
+    @Autowired
+    private Students_SubjectsRepository studentsSubjectsRepository;
 
 
     @PostMapping(path = "/addTeacher") // Map ONLY POST Requests
@@ -71,13 +74,28 @@ public class Controller {
         }
         Teacher teacher = new Teacher(modelDTO.getTeacher_id());
 
-        Subject subjectModel = new Subject(teacher,modelDTO.getSubject_id(), modelDTO.getSubject_name(),modelDTO.getSubject_detail(), modelDTO.getStart_date(),modelDTO.getEnd_date(),modelDTO.getDay());
-//        subjectModel.setSubject_name(modelDTO.getSubject_name());
-//        subjectModel.setSubject_id(modelDTO.getSubject_id());
-//        subjectModel.setStart_date(modelDTO.getStart_date());
-//        subjectModel.setEnd_date(modelDTO.getEnd_date());
-//        subjectModel.setDay(modelDTO.getDay());
+        Subject subjectModel = new Subject(teacher, modelDTO.getSubject_id(), modelDTO.getSubject_name(), modelDTO.getSubject_credit(), modelDTO.getSubject_detail(), modelDTO.getStart_date(), modelDTO.getEnd_date(), modelDTO.getDay());
         subjectRepository.save(subjectModel);
+        return "Saved";
+    }
+
+    @PostMapping(path = "/addCourse") // Map ONLY POST Requests
+    public @ResponseBody
+    String addNewCourse(@RequestBody String jsonObj) {
+        Subject_StudentDTO modelDTO = new Subject_StudentDTO();
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            modelDTO = objectMapper.readValue(jsonObj, Subject_StudentDTO.class);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        Students_Subjects studentsSubjects = new Students_Subjects();
+        Student student = new Student(modelDTO.getStudent_id());
+        Subject subject = new Subject(modelDTO.getSubject_id());
+        studentsSubjects.setStudent(student);
+        studentsSubjects.setSubject(subject);
+        studentsSubjectsRepository.save(studentsSubjects);
         return "Saved";
     }
 

@@ -17,17 +17,6 @@ public class Teacher implements Serializable {
     private String first_name;
     private String last_name;
     private String branch;
-    @OneToOne(mappedBy = "teacher", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Subject subject;
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
-    }
 
     public Teacher() {
 
@@ -36,14 +25,12 @@ public class Teacher implements Serializable {
         this.id = id;
     }
 
-
     public Teacher(Long id,String fname, String lname, String branch){
         this.id = id;
         this.first_name = fname;
         this.last_name = lname;
         this.branch = branch;
     }
-
 
     public Long getId() {
         return id;

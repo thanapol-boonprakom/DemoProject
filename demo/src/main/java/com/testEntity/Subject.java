@@ -1,6 +1,7 @@
 package com.testEntity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
@@ -20,12 +21,14 @@ public class Subject implements Serializable {
     @Column(unique = true)
     private String subject_id;
     private String subject_name;
+    private String subject_credit;
     private String subject_detail;
     @Temporal(TemporalType.TIME)
     private Date start_date;
     @Temporal(TemporalType.TIME)
     private Date end_date;
     private String day;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
@@ -36,15 +39,20 @@ public class Subject implements Serializable {
     public Subject() {
 
     }
+    public Subject(Long id){
+        this.id = id;
+    }
 
     public Subject(Teacher teacher, String subject_id,
                    String subject_name,
+                   String subject_credit,
                    String subject_detail,
                    Date start_date,
                    Date end_date,
                    String day) {
         this.teacher = teacher;
         this.subject_name = subject_name;
+        this.subject_credit = subject_credit;
         this.subject_id = subject_id;
         this.subject_detail = subject_detail;
         this.start_date = start_date;
@@ -96,6 +104,14 @@ public class Subject implements Serializable {
         return start_date;
     }
 
+    public Set<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(Set<Student> students) {
+        this.students = students;
+    }
+
     public void setStart_date(Date start_date) {
         this.start_date = start_date;
     }
@@ -116,4 +132,11 @@ public class Subject implements Serializable {
         this.day = day;
     }
 
+    public String getSubject_credit() {
+        return subject_credit;
+    }
+
+    public void setSubject_credit(String subject_credit) {
+        this.subject_credit = subject_credit;
+    }
 }

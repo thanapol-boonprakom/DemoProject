@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
+
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
 public class SubjectModelDTO {
     private Long id;
     private String subject_id;
     private String subject_name;
+    private String subject_credit;
     private String subject_detail;
     private Long teacher_id;
     @Temporal(TemporalType.TIME)
@@ -81,5 +83,13 @@ public class SubjectModelDTO {
 
     public void setEnd_date(Date end_date) {
         this.end_date = end_date;
+    }
+
+    public String getSubject_credit() {
+        return subject_credit;
+    }
+
+    public void setSubject_credit(String subject_credit) {
+        this.subject_credit = subject_credit;
     }
 }
