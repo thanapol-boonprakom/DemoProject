@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,10 +24,10 @@ public class Subject implements Serializable {
     private String subject_name;
     private String subject_credit;
     private String subject_detail;
-    @Temporal(TemporalType.TIME)
-    private Date start_date;
-    @Temporal(TemporalType.TIME)
-    private Date end_date;
+//    @Temporal(TemporalType.TIME)
+    private LocalTime start_date;
+//    @Temporal(TemporalType.TIME)
+    private LocalTime end_date;
     private String day;
 
     @OneToOne(fetch = FetchType.LAZY, optional = false)
@@ -47,8 +48,8 @@ public class Subject implements Serializable {
                    String subject_name,
                    String subject_credit,
                    String subject_detail,
-                   Date start_date,
-                   Date end_date,
+                   LocalTime start_date,
+                   LocalTime end_date,
                    String day) {
         this.teacher = teacher;
         this.subject_name = subject_name;
@@ -100,10 +101,6 @@ public class Subject implements Serializable {
         this.subject_detail = subject_detail;
     }
 
-    public Date getStart_date() {
-        return start_date;
-    }
-
     public Set<Student> getStudents() {
         return students;
     }
@@ -112,24 +109,28 @@ public class Subject implements Serializable {
         this.students = students;
     }
 
-    public void setStart_date(Date start_date) {
-        this.start_date = start_date;
-    }
-
-    public Date getEnd_date() {
-        return end_date;
-    }
-
-    public void setEnd_date(Date end_date) {
-        this.end_date = end_date;
-    }
-
     public String getDay() {
         return day;
     }
 
     public void setDay(String day) {
         this.day = day;
+    }
+
+    public LocalTime getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(LocalTime start_date) {
+        this.start_date = start_date;
+    }
+
+    public LocalTime getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(LocalTime end_date) {
+        this.end_date = end_date;
     }
 
     public String getSubject_credit() {

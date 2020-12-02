@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.time.LocalTime;
 import java.util.Date;
 
 @JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
@@ -15,10 +16,10 @@ public class SubjectModelDTO {
     private String subject_credit;
     private String subject_detail;
     private Long teacher_id;
-    @Temporal(TemporalType.TIME)
-    private Date start_date;
-    @Temporal(TemporalType.TIME)
-    private Date end_date;
+//    @Temporal(TemporalType.TIME)
+    private LocalTime start_date;
+//    @Temporal(TemporalType.TIME)
+    private LocalTime end_date;
     private String day;
 
     public String getDay() {
@@ -69,19 +70,19 @@ public class SubjectModelDTO {
         this.teacher_id = teacher_id;
     }
 
-    public Date getStart_date() {
+    public LocalTime getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Date start_date) {
+    public void setStart_date(LocalTime start_date) {
         this.start_date = start_date;
     }
 
-    public Date getEnd_date() {
+    public LocalTime getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(Date end_date) {
+    public void setEnd_date(LocalTime end_date) {
         this.end_date = end_date;
     }
 

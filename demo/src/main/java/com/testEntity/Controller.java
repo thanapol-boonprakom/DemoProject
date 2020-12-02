@@ -6,7 +6,12 @@ import model.OTD.SubjectModelDTO;
 import model.OTD.Subject_StudentDTO;
 import model.OTD.TeacherModelDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @org.springframework.stereotype.Controller
 @RequestMapping(path = "/demoProject")
@@ -90,14 +95,21 @@ public class Controller {
         } catch (Exception e) {
             System.out.println(e);
         }
-        Students_Subjects studentsSubjects = new Students_Subjects();
-        Student student = new Student(modelDTO.getStudent_id());
-        Subject subject = new Subject(modelDTO.getSubject_id());
-        studentsSubjects.setStudent(student);
-        studentsSubjects.setSubject(subject);
-        studentsSubjectsRepository.save(studentsSubjects);
-        return "Saved";
+
+        if ((int) studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id()) < 8) {
+            Students_Subjects studentsSubjects = new Students_Subjects();
+            Student student = new Student(modelDTO.getStudent_id());
+            Subject subject = new Subject(modelDTO.getSubject_id());
+            studentsSubjects.setStudent(student);
+            studentsSubjects.setSubject(subject);
+            studentsSubjectsRepository.save(studentsSubjects);
+            return "Saved " + studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id());
+        } else {
+            return "Cannot Save " + studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id());
+        }
+
     }
+
 
     @GetMapping(path = "/allTeacher")
     public @ResponseBody
@@ -111,9 +123,29 @@ public class Controller {
         return subjectRepository.findAll();
     }
 
+    @GetMapping(path = "/allCourse")
+    public @ResponseBody
+    Iterable<Students_Subjects> getAllCourse() {
+        return studentsSubjectsRepository.findAll();
+    }
+
     @GetMapping(path = "/allStudent")
     public @ResponseBody
     Iterable<Student> getAllStudent() {
         return studentRepository.findAll();
     }
+
+    @GetMapping(path = "/allByIdStudent")
+    public @ResponseBody
+    String getAllById(@RequestParam String id) {
+//        studentsSubjectsRepository.countAllById(Long.parseLong(id));
+        return "count : " + studentsSubjectsRepository.countAllByStudent_Id(Long.parseLong(id));
+    }
+//    @GetMapping(path = "/countStartAndEnd")
+//    public @ResponseBody
+//    String countStartAndEnd(@RequestParam String start,@RequestParam String end) {
+////        studentsSubjectsRepository.countAllById(Long.parseLong(id));
+//        return "count : " + studentsSubjectsRepository.countAllBySubject_Start_dateAndSubject_End_date(start,end);
+//    }
+
 }

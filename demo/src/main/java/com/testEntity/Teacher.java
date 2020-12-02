@@ -31,6 +31,12 @@ public class Teacher implements Serializable {
         this.last_name = lname;
         this.branch = branch;
     }
+    public Teacher(String fname, String lname, String branch){
+        this.id = id;
+        this.first_name = fname;
+        this.last_name = lname;
+        this.branch = branch;
+    }
 
     public Long getId() {
         return id;
