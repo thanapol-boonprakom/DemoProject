@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.util.*;
 
 @org.springframework.stereotype.Controller
 @RequestMapping(path = "/demoProject")
@@ -89,24 +89,65 @@ public class Controller {
     String addNewCourse(@RequestBody String jsonObj) {
         Subject_StudentDTO modelDTO = new Subject_StudentDTO();
         ObjectMapper objectMapper = new ObjectMapper();
+        Iterable<Students_Subjects> students_subjectsIterable = new ArrayList<>();
+        Iterator<Students_Subjects> subjectsIterator = students_subjectsIterable.iterator();
+        Optional<Subject> optionalStudentsSubjects = null;
+        LocalTime startDt = LocalTime.now();
+        LocalTime endDt = LocalTime.now();
+
+
+//        System.out.println(optionalStudentsSubjects.get().getSubject().getSubject_id());
 
         try {
             modelDTO = objectMapper.readValue(jsonObj, Subject_StudentDTO.class);
+            students_subjectsIterable = studentsSubjectsRepository.findAll();
+            boolean check = false;
+            if ((int) studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id()) < 8) {
+                optionalStudentsSubjects = subjectRepository.findById(modelDTO.getSubject_id());
+                startDt = optionalStudentsSubjects.get().getStart_date();
+                endDt = optionalStudentsSubjects.get().getEnd_date();
+                for (Students_Subjects str : students_subjectsIterable) {
+
+                    if ((((str.getSubject().getStart_date().isAfter(startDt) || str.getSubject().getStart_date().equals(startDt)) && (str.getSubject().getStart_date().isBefore(endDt) || str.getSubject().getStart_date().equals(endDt))) ||
+                            ((str.getSubject().getEnd_date().isAfter(startDt) || str.getSubject().getEnd_date().equals(startDt)) && (str.getSubject().getEnd_date().isBefore(endDt) || str.getSubject().getEnd_date().equals(endDt)))) &&
+                            (str.getSubject().getDay()).equalsIgnoreCase(optionalStudentsSubjects.get().getDay())) {
+                        System.out.println("find time " + str.getSubject().getId());
+                        System.out.println("Is time fine " + startDt + " <>" + endDt + " ** "
+                                + str.getSubject().getStart_date().getHour() + ":" + str.getSubject().getStart_date().getMinute() + " <> " + str.getSubject().getEnd_date().getHour() + ":" + str.getSubject().getEnd_date().getMinute());
+                        check = true;
+                        break;
+                    }
+                    System.out.println(" >>>(" + str.getSubject().getStart_date().isAfter(startDt) +
+                            "+" + str.getSubject().getStart_date().equals(startDt) +
+                            "+" + str.getSubject().getStart_date().isBefore(endDt) +
+                            "+" + str.getSubject().getStart_date().equals(endDt) +
+                            ")+(" + ((str.getSubject().getEnd_date().isAfter(startDt)) +
+                            "+" + str.getSubject().getEnd_date().equals(startDt) +
+                            "+" + (str.getSubject().getEnd_date().isBefore(endDt) +
+                            "+" + str.getSubject().getEnd_date().equals(endDt) + ") && (" + (str.getSubject().getDay()).equalsIgnoreCase(optionalStudentsSubjects.get().getDay()) + ") && (" + str.getSubject().getDay() + " | " + optionalStudentsSubjects.get().getDay())));
+                    System.out.println(startDt + " <>" + endDt + " ** "
+                            + str.getSubject().getStart_date().getHour() + ":" + str.getSubject().getStart_date().getMinute() + " <> " + str.getSubject().getEnd_date().getHour() + ":" + str.getSubject().getEnd_date().getMinute());
+                }
+                if (check == false) {
+                    Students_Subjects studentsSubjects = new Students_Subjects();
+                    Student student = new Student(modelDTO.getStudent_id());
+                    Subject subject = new Subject(modelDTO.getSubject_id());
+                    studentsSubjects.setStudent(student);
+                    studentsSubjects.setSubject(subject);
+                    studentsSubjectsRepository.save(studentsSubjects);
+                    return "Saved " + studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id());
+                } else {
+                    return "Cannot Save Duplicate time " + optionalStudentsSubjects.get().getStart_date()+" - "+optionalStudentsSubjects.get().getEnd_date();
+                }
+
+            } else {
+                return "Cannot register no more than 8 subjects. ";
+            }
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println(e.toString());
+            return "error";
         }
 
-        if ((int) studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id()) < 8) {
-            Students_Subjects studentsSubjects = new Students_Subjects();
-            Student student = new Student(modelDTO.getStudent_id());
-            Subject subject = new Subject(modelDTO.getSubject_id());
-            studentsSubjects.setStudent(student);
-            studentsSubjects.setSubject(subject);
-            studentsSubjectsRepository.save(studentsSubjects);
-            return "Saved " + studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id());
-        } else {
-            return "Cannot Save " + studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id());
-        }
 
     }
 
@@ -141,11 +182,48 @@ public class Controller {
 //        studentsSubjectsRepository.countAllById(Long.parseLong(id));
         return "count : " + studentsSubjectsRepository.countAllByStudent_Id(Long.parseLong(id));
     }
+
 //    @GetMapping(path = "/countStartAndEnd")
 //    public @ResponseBody
-//    String countStartAndEnd(@RequestParam String start,@RequestParam String end) {
+//    String countStartAndEnd(@RequestParam String start, @RequestParam String end, @RequestParam Long id) {
+//        LocalTime startDt = LocalTime.parse(start);
+//        LocalTime endDt = LocalTime.parse(end);
+//        Iterable<Students_Subjects> studentsSubjects = new ArrayList<>();
+//        Optional<Students_Subjects> optionalStudentsSubjects;
+//        studentsSubjects = studentsSubjectsRepository.findAll();
+//        Iterator<Students_Subjects> subjectsIterator = studentsSubjects.iterator();
+//        Students_Subjects obj = new Students_Subjects();
+//        optionalStudentsSubjects = studentsSubjectsRepository.findById(id);
+//        System.out.println(optionalStudentsSubjects.get().getSubject().getSubject_id());
+//        startDt = optionalStudentsSubjects.get().getSubject().getStart_date();
+//        endDt = optionalStudentsSubjects.get().getSubject().getEnd_date();
+//        boolean check = false;
+////        for (Students_Subjects str : studentsSubjects) {
+////
+////            if ((((str.getSubject().getStart_date().isAfter(startDt) || str.getSubject().getStart_date().equals(startDt)) && (str.getSubject().getStart_date().isBefore(endDt) || str.getSubject().getStart_date().equals(endDt))) ||
+////                    ((str.getSubject().getEnd_date().isAfter(startDt) || str.getSubject().getEnd_date().equals(startDt)) && (str.getSubject().getEnd_date().isBefore(endDt) || str.getSubject().getEnd_date().equals(endDt)))) &&
+////                    (str.getSubject().getDay()).equalsIgnoreCase(optionalStudentsSubjects.get().getSubject().getDay())) {
+////                System.out.println("xxxx");
+////                check = true;
+////            }
+////            System.out.println(" >>>(" + str.getSubject().getStart_date().isAfter(startDt) +
+////                    "+" + str.getSubject().getStart_date().equals(startDt) +
+////                    "+" + str.getSubject().getStart_date().isBefore(endDt) +
+////                    "+" + str.getSubject().getStart_date().equals(endDt) +
+////                    ")+(" + ((str.getSubject().getEnd_date().isAfter(startDt)) +
+////                    "+" + str.getSubject().getEnd_date().equals(startDt) +
+////                    "+" + (str.getSubject().getEnd_date().isBefore(endDt) +
+////                    "+" + str.getSubject().getEnd_date().equals(endDt) + ") && (" + (str.getSubject().getDay()).equalsIgnoreCase(optionalStudentsSubjects.get().getSubject().getDay()) + ")")));
+////            System.out.println(startDt + " <>" + endDt + " ** "
+////                    + str.getSubject().getStart_date().getHour() + ":" + str.getSubject().getStart_date().getMinute() + " <> " + str.getSubject().getEnd_date().getHour() + ":" + str.getSubject().getEnd_date().getMinute());
+////        }
+////        if
+////        while(subjectsIterator.hasNext()) {
+////            String element = subjectsIterator.next().getStudent().getFirst_name();
+////            System.out.println( element +" <<");
+////        }
 ////        studentsSubjectsRepository.countAllById(Long.parseLong(id));
-//        return "count : " + studentsSubjectsRepository.countAllBySubject_Start_dateAndSubject_End_date(start,end);
+//        return "count : ";
 //    }
 
 }
