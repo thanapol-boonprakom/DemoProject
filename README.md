@@ -1,5 +1,5 @@
 ### วิธีรันหลังบ้าน
-###### 1.เปิด command prompt แล้ว cd ไปในโฟลเดอร์ springbootProject
+###### 1.เปิด command prompt แล้ว cd ไปในโฟลเดอร์ DemoProject
 ###### 2.พิมคำสั่ง docker-compose up
 ###### 3.เปิด MySQL Workbench แล้วเพิ่ม Connections
 - hostname: localhost
