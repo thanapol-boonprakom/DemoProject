@@ -7,9 +7,9 @@
 - user: root
 - password : helloworld
 ###### 4.สร้าง schema ชื่อ springbootProject
-###### 3.เปิดโปรแกรม Intellij เพื่อเปิดโฟลเดอร์ springbootProject
+###### 3.เปิดโปรแกรม Intellij แล้วเปิดโฟลเดอร์ springbootProject
 ###### 4.รันโปรเจ็ค springbootProject
 
 ### วิธีรันหน้าบ้าน
-###### 1.เปิด command prompt แล้ว cd ไปในโฟลเดอร์  DemoProject
-###### 2.ให้ cd เข้าไปในโฟลเดอร์ react-app แล้วพิมพ์คำสั่ง npm start
+###### 1.เปิด command prompt แล้ว cd ไปในโฟลเดอร์ DemoProject
+###### 2.ให้ cd เข้าไปในโฟลเดอร์ react-web แล้วพิมพ์คำสั่ง npm start
