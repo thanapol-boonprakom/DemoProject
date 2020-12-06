@@ -17,10 +17,25 @@ public class SubjectModelDTO {
     private String subject_detail;
     private Long teacher_id;
 //    @Temporal(TemporalType.TIME)
-    private LocalTime start_date;
+    private String start_date;
 //    @Temporal(TemporalType.TIME)
-    private LocalTime end_date;
+    private String end_date;
     private String day;
+
+    @Override
+    public String toString() {
+        return "SubjectModelDTO{" +
+                "id=" + id +
+                ", subject_id='" + subject_id + '\'' +
+                ", subject_name='" + subject_name + '\'' +
+                ", subject_credit='" + subject_credit + '\'' +
+                ", subject_detail='" + subject_detail + '\'' +
+                ", teacher_id=" + teacher_id +
+                ", start_date='" + start_date + '\'' +
+                ", end_date='" + end_date + '\'' +
+                ", day='" + day + '\'' +
+                '}';
+    }
 
     public String getDay() {
         return day;
@@ -70,19 +85,19 @@ public class SubjectModelDTO {
         this.teacher_id = teacher_id;
     }
 
-    public LocalTime getStart_date() {
+    public String getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(LocalTime start_date) {
+    public void setStart_date(String start_date) {
         this.start_date = start_date;
     }
 
-    public LocalTime getEnd_date() {
+    public String getEnd_date() {
         return end_date;
     }
 
-    public void setEnd_date(LocalTime end_date) {
+    public void setEnd_date(String end_date) {
         this.end_date = end_date;
     }
 

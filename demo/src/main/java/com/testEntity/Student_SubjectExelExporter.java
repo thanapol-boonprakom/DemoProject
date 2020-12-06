@@ -23,7 +23,7 @@ public class Student_SubjectExelExporter {
     }
 
     private void writeHeaderLine() {
-        sheet = workbook.createSheet("Users");
+        sheet = workbook.createSheet("ข้อมูลการลงทะเบียน");
 
         Row row = sheet.createRow(0);
 
@@ -33,9 +33,9 @@ public class Student_SubjectExelExporter {
         font.setFontHeight(16);
         style.setFont(font);
 
-        createCell(row, 0, "ID", style);
-        createCell(row, 1, "รหัสวิชา", style);
-        createCell(row, 2, "ชื่อวิชา", style);
+        createCell(row, 0, "รหัสวิชา", style);
+        createCell(row, 1, "ชื่อวิชา", style);
+        createCell(row, 2, "เวลาเรียน", style);
         createCell(row, 3, "อาจารย์ที่สอน", style);
         createCell(row, 4, "นักเรียน", style);
 
@@ -66,11 +66,11 @@ public class Student_SubjectExelExporter {
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
 
-            createCell(row, columnCount++, obj.getId().toString(), style);
             createCell(row, columnCount++, obj.getSubject().getSubject_id().toString(), style);
             createCell(row, columnCount++, obj.getSubject().getSubject_name(), style);
-            createCell(row, columnCount++, obj.getSubject().getTeacher().getFirst_name(), style);
-            createCell(row, columnCount++, obj.getStudent().getFirst_name(), style);
+            createCell(row, columnCount++, obj.getSubject().getStart_date().toString()+" - "+obj.getSubject().getEnd_date(), style);
+            createCell(row, columnCount++, obj.getSubject().getTeacher().getFirst_name()+"  "+obj.getSubject().getTeacher().getLast_name(), style);
+            createCell(row, columnCount++, obj.getStudent().getFirst_name()+"  "+obj.getStudent().getLast_name(), style);
 
         }
     }

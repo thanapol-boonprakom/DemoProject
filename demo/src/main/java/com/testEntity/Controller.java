@@ -37,16 +37,19 @@ public class Controller {
 
         try {
             modelDTO = objectMapper.readValue(jsonObj, TeacherModelDTO.class);
+            Teacher n = new Teacher();
+            n.setFirst_name(modelDTO.getFirst_name());
+            n.setLast_name(modelDTO.getLast_name());
+            n.setBranch(modelDTO.getBranch());
+            System.out.println(n.getFirst_name() + " " + n.getLast_name() + " " + n.getBranch());
+            teacherRepository.save(n);
+            return "Saved";
         } catch (Exception e) {
             System.out.println(e);
+            return "notSaved";
         }
 
-        Teacher n = new Teacher();
-        n.setFirst_name(modelDTO.getFirst_name());
-        n.setLast_name(modelDTO.getLast_name());
-        n.setBranch(modelDTO.getBranch());
-        teacherRepository.save(n);
-        return "Saved";
+
     }
 
     @PostMapping(path = "/addStudent") // Map ONLY POST Requests
@@ -57,16 +60,18 @@ public class Controller {
 
         try {
             modelDTO = objectMapper.readValue(jsonObj, StudentModelDTO.class);
+            Student studentModel = new Student();
+            studentModel.setFirst_name(modelDTO.getFirst_name());
+            studentModel.setLast_name(modelDTO.getLast_name());
+            studentModel.setYear(modelDTO.getYear());
+            studentRepository.save(studentModel);
+            return "Saved";
         } catch (Exception e) {
             System.out.println(e);
+            return "not saved";
         }
 
-        Student studentModel = new Student();
-        studentModel.setFirst_name(modelDTO.getFirst_name());
-        studentModel.setLast_name(modelDTO.getLast_name());
-        studentModel.setYear(modelDTO.getYear());
-        studentRepository.save(studentModel);
-        return "Saved";
+
     }
 
     @PostMapping(path = "/addSubject") // Map ONLY POST Requests
@@ -77,14 +82,17 @@ public class Controller {
 
         try {
             modelDTO = objectMapper.readValue(jsonObj, SubjectModelDTO.class);
+            Teacher teacher = new Teacher(modelDTO.getTeacher_id());
+
+            Subject subjectModel = new Subject(teacher, modelDTO.getSubject_id(), modelDTO.getSubject_name(), modelDTO.getSubject_credit(), modelDTO.getSubject_detail(), LocalTime.parse(modelDTO.getStart_date()), LocalTime.parse(modelDTO.getEnd_date()), modelDTO.getDay());
+            System.out.println(subjectModel.toString());
+            subjectRepository.save(subjectModel);
+            return "Saved";
         } catch (Exception e) {
             System.out.println(e);
+            return "error";
         }
-        Teacher teacher = new Teacher(modelDTO.getTeacher_id());
 
-        Subject subjectModel = new Subject(teacher, modelDTO.getSubject_id(), modelDTO.getSubject_name(), modelDTO.getSubject_credit(), modelDTO.getSubject_detail(), modelDTO.getStart_date(), modelDTO.getEnd_date(), modelDTO.getDay());
-        subjectRepository.save(subjectModel);
-        return "Saved";
     }
 
     @PostMapping(path = "/addCourse") // Map ONLY POST Requests
@@ -97,13 +105,10 @@ public class Controller {
         Optional<Subject> optionalStudentsSubjects = null;
         LocalTime startDt = LocalTime.now();
         LocalTime endDt = LocalTime.now();
-
-
 //        System.out.println(optionalStudentsSubjects.get().getSubject().getSubject_id());
-
         try {
             modelDTO = objectMapper.readValue(jsonObj, Subject_StudentDTO.class);
-            students_subjectsIterable = studentsSubjectsRepository.findAll();
+            students_subjectsIterable = studentsSubjectsRepository.findAllByStudent_Id(modelDTO.getStudent_id());
             boolean check = false;
             if ((int) studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id()) < 8) {
                 optionalStudentsSubjects = subjectRepository.findById(modelDTO.getSubject_id());
@@ -131,6 +136,7 @@ public class Controller {
                     System.out.println(startDt + " <>" + endDt + " ** "
                             + str.getSubject().getStart_date().getHour() + ":" + str.getSubject().getStart_date().getMinute() + " <> " + str.getSubject().getEnd_date().getHour() + ":" + str.getSubject().getEnd_date().getMinute());
                 }
+
                 if (check == false) {
                     Students_Subjects studentsSubjects = new Students_Subjects();
                     Student student = new Student(modelDTO.getStudent_id());
@@ -138,13 +144,13 @@ public class Controller {
                     studentsSubjects.setStudent(student);
                     studentsSubjects.setSubject(subject);
                     studentsSubjectsRepository.save(studentsSubjects);
-                    return "Saved " + studentsSubjectsRepository.countAllByStudent_Id(modelDTO.getStudent_id());
+                    return "Saved";
                 } else {
-                    return "Cannot Save Duplicate time " + optionalStudentsSubjects.get().getStart_date()+" - "+optionalStudentsSubjects.get().getEnd_date();
+                    return "Cannot Save Duplicate time";
                 }
 
             } else {
-                return "Cannot register no more than 8 subjects. ";
+                return "Cannot register no more than 8 subjects";
             }
         } catch (Exception e) {
             System.out.println(e.toString());
@@ -197,7 +203,7 @@ public class Controller {
         String headerValue = "attachment; filename=users_" + currentDateTime + ".xlsx";
         response.setHeader(headerKey, headerValue);
 
-        List<Students_Subjects> listUsers = studentsSubjectsRepository.findAllBy();
+        List<Students_Subjects> listUsers = studentsSubjectsRepository.findAllByOrderByIdAsc();
 
         Student_SubjectExelExporter excelExporter = new Student_SubjectExelExporter(listUsers);
 

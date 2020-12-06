@@ -1,0 +1,63 @@
+{
+  "name": "react-app",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "https://jsonplaceholder.typicode.com",
+  "dependencies": {
+    "@material-ui/core": "^4.11.2",
+    "@material-ui/data-grid": "^4.0.0-alpha.11",
+    "@material-ui/icons": "^4.11.2",
+    "@testing-library/jest-dom": "^5.11.6",
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^12.4.0",
+    "axios": "^0.21.0",
+    "bootstrap": "^4.5.3",
+    "dropdown": "^0.2.0",
+    "file-saver": "^2.0.5",
+    "isomorphic-fetch": "^3.0.0",
+    "material-table": "^1.69.2",
+    "material-ui-icons": "^1.0.0-beta.36",
+    "mdbreact": "^5.0.0",
+    "react": "^17.0.1",
+    "react-bootstrap": "^1.4.0",
+    "react-bootstrap-table-next": "^4.0.3",
+    "react-bootstrap-table2-paginator": "^2.1.2",
+    "react-bootstrap-validation": "^0.1.11",
+    "react-dom": "^17.0.1",
+    "react-input-time": "^2.0.1",
+    "react-router": "^3.2.6",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.1",
+    "react-table": "^6.11.5",
+    "rsuite": "^4.8.5",
+    "semantic-ui-react": "^2.0.1",
+    "web-vitals": "^0.2.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^1.0.6"
+  }
+}
